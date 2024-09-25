@@ -1,0 +1,16 @@
+<mat-card class="directory-card">
+    <mat-card-header>
+      <mat-card-title>Lista de Diretórios</mat-card-title>
+      <mat-card-subtitle>Visualize seus diretórios e subdiretórios</mat-card-subtitle>
+    </mat-card-header>
+  
+    <mat-list>
+      <mat-list-item *ngFor="let dir of directories">
+        <div mat-line>{{ dir.nome }}</div>
+        <div mat-line>
+          <span *ngIf="dir.subdiretorios?.length">Subdiretórios: {{ dir.subdiretorios.length }}</span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+  

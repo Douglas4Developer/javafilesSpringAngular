@@ -1,5 +1,6 @@
 package com.dev.javafiles.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"diretorioPai"})  // Ignora o diretorioPai na serialização
 public class Diretorio {
 
     @Id
@@ -21,6 +23,7 @@ public class Diretorio {
 
     @ManyToOne
     @JoinColumn(name = "diretorio_pai_id")
+    @JsonIgnoreProperties("subdiretorios")  // Evita a recursão dos subdiretórios quando serializar
     private Diretorio diretorioPai;
 
     @OneToMany(mappedBy = "diretorioPai", cascade = CascadeType.ALL)

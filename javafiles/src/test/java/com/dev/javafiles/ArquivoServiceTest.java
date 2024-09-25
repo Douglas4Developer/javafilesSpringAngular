@@ -1,9 +1,10 @@
 package com.dev.javafiles;
 
+import com.dev.javafiles.exception.ResourceNotFoundException;
 import com.dev.javafiles.model.Arquivo;
 import com.dev.javafiles.model.Diretorio;
 import com.dev.javafiles.repository.ArquivoRepository;
-import com.dev.javafiles.service.ArquivoService;
+import com.dev.javafiles.service.impl.ArquivoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.*;
 class ArquivoServiceTest {
 
     @InjectMocks
-    private ArquivoService arquivoService;
+    private ArquivoServiceImpl arquivoService;
 
     @Mock
     private ArquivoRepository arquivoRepository;
@@ -64,8 +65,36 @@ class ArquivoServiceTest {
     }
 
     @Test
+    void testBuscarPorId_NotFound() {
+        when(arquivoRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
+            arquivoService.buscarPorId(1L);
+        });
+
+        String expectedMessage = "Arquivo não encontrado com o ID: 1";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
     void testDeletarArquivo() {
+        when(arquivoRepository.existsById(1L)).thenReturn(true);
+
         arquivoService.deletarArquivo(1L);
         verify(arquivoRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void testDeletarArquivo_NotFound() {
+        when(arquivoRepository.existsById(1L)).thenReturn(false);
+
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
+            arquivoService.deletarArquivo(1L);
+        });
+
+        String expectedMessage = "Arquivo não encontrado com o ID: 1";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 }

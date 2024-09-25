@@ -1,7 +1,9 @@
-package com.dev.javafiles.service;
+package com.dev.javafiles;
 
+import com.dev.javafiles.exception.ResourceNotFoundException;
 import com.dev.javafiles.model.Diretorio;
 import com.dev.javafiles.repository.DiretorioRepository;
+import com.dev.javafiles.service.impl.DiretorioServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,7 +19,7 @@ import static org.mockito.Mockito.*;
 class DiretorioServiceTest {
 
 	@InjectMocks
-	private DiretorioService diretorioService;
+	private DiretorioServiceImpl diretorioService;
 
 	@Mock
 	private DiretorioRepository diretorioRepository;
@@ -59,8 +61,36 @@ class DiretorioServiceTest {
 	}
 
 	@Test
+	void testBuscarPorId_NotFound() {
+		when(diretorioRepository.findById(1L)).thenReturn(Optional.empty());
+
+		Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
+			diretorioService.buscarPorId(1L);
+		});
+
+		String expectedMessage = "Diretório não encontrado com o ID: 1";
+		String actualMessage = exception.getMessage();
+		assertTrue(actualMessage.contains(expectedMessage));
+	}
+
+	@Test
 	void testDeletarDiretorio() {
+		when(diretorioRepository.existsById(1L)).thenReturn(true);
+
 		diretorioService.deletarDiretorio(1L);
 		verify(diretorioRepository, times(1)).deleteById(1L);
+	}
+
+	@Test
+	void testDeletarDiretorio_NotFound() {
+		when(diretorioRepository.existsById(1L)).thenReturn(false);
+
+		Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
+			diretorioService.deletarDiretorio(1L);
+		});
+
+		String expectedMessage = "Diretório não encontrado com o ID: 1";
+		String actualMessage = exception.getMessage();
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 }

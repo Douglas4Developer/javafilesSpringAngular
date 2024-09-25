@@ -1,5 +1,6 @@
 package com.dev.javafiles.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"diretorio"})  // Ignora o diretorio na serialização para evitar loops
 public class Arquivo {
 
     @Id
