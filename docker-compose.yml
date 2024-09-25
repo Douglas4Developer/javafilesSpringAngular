@@ -20,10 +20,12 @@ services:
     build: ./file-system-frontend
     container_name: file-system-frontend
     ports:
-      - "80:80"
+      - "4200:4200"  # Mapeia a porta 4200 do contêiner para a 4200 do host
     networks:
       - app-network
     restart: always
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Corrige possíveis problemas de hot-reload no Docker
 
   mysql:
     image: mysql:8.0

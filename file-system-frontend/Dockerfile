@@ -1,32 +1,20 @@
-# Fase 1: Construindo a aplicação Angular
-FROM node:16-alpine AS build
+# Etapa 1: Usar uma imagem oficial do Node.js como base para desenvolvimento
+FROM node:18 AS development
 
-# Definindo o diretório de trabalho dentro do container
-WORKDIR /usr/src/app
+# Diretório de trabalho dentro do contêiner
+WORKDIR /app
 
-# Copiando os arquivos package.json e package-lock.json para instalar as dependências
+# Copiar os arquivos package.json e package-lock.json para o contêiner
 COPY package*.json ./
 
-# Instalando as dependências do projeto Angular
+# Instalar as dependências da aplicação
 RUN npm install
 
-# Copiando o restante dos arquivos do projeto Angular para o container
+# Copiar o restante do código da aplicação para o contêiner
 COPY . .
 
-# Gerando o build da aplicação Angular para o ambiente de produção
-RUN npm run build -- --configuration production
+# Expor a porta 4200 para o ng serve
+EXPOSE 4200
 
-# Fase 2: Servindo a aplicação Angular com Nginx
-FROM nginx:alpine
-
-# Copiando o arquivo de configuração do Nginx para o container
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copiando os arquivos do build do Angular gerados na fase 1
-COPY --from=build /usr/src/app/dist/file-system-frontend /usr/share/nginx/html
-
-# Expondo a porta 80 para o Nginx
-EXPOSE 80
-
-# Iniciando o Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Usar o ng serve para rodar a aplicação na porta 4200
+CMD ["npm", "run", "start"]
