@@ -39,7 +39,7 @@ Este projeto é um sistema de gerenciamento de arquivos e diretórios, desenvolv
 1. **Clone o repositório**:
    ```bash
    git clone https://github.com/Douglas4Developer/javafilesSpringReact.git
-   cd gerenciador-arquivos-diretorios
+   cd javafilesSpringReact
    ```
 
 2. ### Docker Setup
