@@ -2,7 +2,7 @@
 # Gerenciador de Arquivos e Diretórios
 ![image](https://github.com/user-attachments/assets/1f1b8a90-4fcf-428d-b8fe-cfbfbc334eba)
 
-Este projeto é um sistema de gerenciamento de arquivos e diretórios, desenvolvido com **Java 21**, **Spring Boot**, **Angular 18** com **standalone components**, **PostgreSQL**, e **Docker**. Ele permite visualizar uma estrutura de diretórios, incluindo subdiretórios e arquivos, de forma visual e interativa, com uma interface baseada em Material Design.
+Este projeto é um sistema de gerenciamento de arquivos e diretórios, desenvolvido com **Java 21**, **Spring Boot**, **Angular 18** com **standalone components**, **MySQL**, e **Docker**. Ele permite visualizar uma estrutura de diretórios, incluindo subdiretórios e arquivos, de forma visual e interativa, com uma interface baseada em Material Design.
 
 ## Tecnologias Utilizadas
 
@@ -10,7 +10,7 @@ Este projeto é um sistema de gerenciamento de arquivos e diretórios, desenvolv
   - Java 21
   - Spring Boot
   - Spring Data JPA
-  - MYSql
+  - MySQL
   - Swagger para documentação
   - Docker para conteinerização
 - **Frontend**:
