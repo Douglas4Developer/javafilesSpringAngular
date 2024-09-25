@@ -6,14 +6,13 @@ WORKDIR /app
 # Copiando os arquivos do projeto
 COPY . .
 
-# Instalando dependências
+# Instalando dependências e fazendo o build do projeto
 RUN npm install
-
-# Compilando o projeto (ajuste de acordo com seu comando de build)
 RUN npm run build --prod
 
 # Usando uma imagem Nginx para servir o frontend
 FROM nginx:alpine
-COPY --from=build /app/dist/file-system-frontend /usr/share/nginx/html
+COPY --from=build /app/dist/ /usr/share/nginx/html
 
+# Expondo a porta 80
 EXPOSE 80

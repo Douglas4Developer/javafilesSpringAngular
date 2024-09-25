@@ -4,6 +4,7 @@ import com.dev.javafiles.exception.ResourceNotFoundException;
 import com.dev.javafiles.model.Arquivo;
 import com.dev.javafiles.model.Diretorio;
 import com.dev.javafiles.repository.ArquivoRepository;
+import com.dev.javafiles.repository.DiretorioRepository;
 import com.dev.javafiles.service.impl.ArquivoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,9 @@ class ArquivoServiceTest {
     @Mock
     private ArquivoRepository arquivoRepository;
 
+    @Mock
+    private DiretorioRepository diretorioRepository; // Adicionado mock para DiretorioRepository
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -32,7 +36,10 @@ class ArquivoServiceTest {
 
     @Test
     void testCriarArquivo() {
+        // Simulando a busca do diretório pelo id no repositório
         Diretorio diretorio = new Diretorio(1L, "Diretorio Teste", null, null, null);
+        when(diretorioRepository.findById(1L)).thenReturn(Optional.of(diretorio));
+
         Arquivo arquivo = new Arquivo(null, "file1.txt", diretorio);
         when(arquivoRepository.save(arquivo)).thenReturn(new Arquivo(1L, "file1.txt", diretorio));
 
