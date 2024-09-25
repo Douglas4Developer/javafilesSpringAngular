@@ -42,25 +42,28 @@ Este projeto é um sistema de gerenciamento de arquivos e diretórios, desenvolv
    cd gerenciador-arquivos-diretorios
    ```
 
-2. **Backend**:
-   - Execute o Docker:
-     ```bash
-     docker-compose up --build
-     ```
-   - O Docker irá criar o banco de dados PostgreSQL e rodar o backend Java.
-   - A aplicação Spring Boot será exposta em: `http://localhost:8080`.
+2. ### Docker Setup
 
-3. **Frontend**:
-   - Entre na pasta `frontend` e instale as dependências:
-     ```bash
-     cd frontend
-     npm install
-     ```
-   - Execute a aplicação Angular:
-     ```bash
-     ng serve
-     ```
-   - A aplicação frontend será exposta em: `http://localhost:4200`.
+Para facilitar a execução do projeto, utilizamos contêineres Docker para o **backend** (Java Spring Boot) e o **frontend** (Angular ou React). Com o uso do **docker-compose**, é possível subir ambos os serviços de forma orquestrada.
+Segue a explicação de como o Docker foi configurado:
+
+1. **Dockerfile do Backend**:
+    - O backend utiliza uma imagem base do OpenJDK 21 para executar a aplicação Spring Boot.
+    - A aplicação é copiada para o contêiner e executada com o comando `java -jar app.jar`.
+    - Porta mapeada: `8080`.
+
+2. **Dockerfile do Frontend**:
+    - Para o frontend, utilizamos o **Node.js** para fazer o build do projeto.
+    - Após o build, os arquivos resultantes são copiados para uma imagem do **Nginx**, que é usada para servir a aplicação.
+    - Porta mapeada: `80`.
+
+3. **Docker Compose**:
+    - O arquivo `docker-compose.yml` orquestra ambos os serviços.
+    - Ele constrói as imagens e sobe os contêineres do **backend** e **frontend**.
+    - Ambos os serviços compartilham a mesma rede, facilitando a comunicação.
+    - Com o comando `docker-compose up --build`, você pode levantar todo o sistema com um único comando.
+
+---
 
 ### Endpoints da API
 
@@ -83,29 +86,6 @@ A documentação da API pode ser acessada em: `http://localhost:8080/swagger-ui/
   - `DirectoryListComponent`: Componente Angular que exibe a árvore de diretórios.
   - `Material Design`: Utilizamos Angular Material para a estrutura de árvore (`mat-tree`), ícones e cartões (`mat-card`).
 
-
----
-
-### Docker Setup
-
-Para facilitar a execução do projeto, utilizamos contêineres Docker para o **backend** (Java Spring Boot) e o **frontend** (Angular ou React). Com o uso do **docker-compose**, é possível subir ambos os serviços de forma orquestrada.
-Segue a explicação de como o Docker foi configurado:
-
-1. **Dockerfile do Backend**:
-    - O backend utiliza uma imagem base do OpenJDK 21 para executar a aplicação Spring Boot.
-    - A aplicação é copiada para o contêiner e executada com o comando `java -jar app.jar`.
-    - Porta mapeada: `8080`.
-
-2. **Dockerfile do Frontend**:
-    - Para o frontend, utilizamos o **Node.js** para fazer o build do projeto.
-    - Após o build, os arquivos resultantes são copiados para uma imagem do **Nginx**, que é usada para servir a aplicação.
-    - Porta mapeada: `80`.
-
-3. **Docker Compose**:
-    - O arquivo `docker-compose.yml` orquestra ambos os serviços.
-    - Ele constrói as imagens e sobe os contêineres do **backend** e **frontend**.
-    - Ambos os serviços compartilham a mesma rede, facilitando a comunicação.
-    - Com o comando `docker-compose up --build`, você pode levantar todo o sistema com um único comando.
 
 ---
 
