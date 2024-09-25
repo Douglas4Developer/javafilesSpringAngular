@@ -41,27 +41,106 @@ Este projeto é um sistema de gerenciamento de arquivos e diretórios, desenvolv
    git clone https://github.com/Douglas4Developer/javafilesSpringReact.git
    cd javafilesSpringReact
    ```
+Aqui está o README detalhado e aprimorado para o recrutador rodar seu projeto localmente:
 
-2. ### Docker Setup
+---
 
-Para facilitar a execução do projeto, utilizamos contêineres Docker para o **backend** (Java Spring Boot) e o **frontend** (Angular ou React). Com o uso do **docker-compose**, é possível subir ambos os serviços de forma orquestrada.
-Segue a explicação de como o Docker foi configurado:
+# Sistema de Gerenciamento de Arquivos e Diretórios
 
-1. **Dockerfile do Backend**:
-    - O backend utiliza uma imagem base do OpenJDK 21 para executar a aplicação Spring Boot.
-    - A aplicação é copiada para o contêiner e executada com o comando `java -jar app.jar`.
-    - Porta mapeada: `8080`.
+Este projeto consiste em um sistema web para gerenciamento de arquivos e diretórios. O backend foi desenvolvido em **Java (Spring Boot)**, enquanto o frontend utiliza **Angular 18**. O sistema é orquestrado usando **Docker** para facilitar a execução e configuração do ambiente.
 
-2. **Dockerfile do Frontend**:
-    - Para o frontend, utilizamos o **Node.js** para fazer o build do projeto.
-    - Após o build, os arquivos resultantes são copiados para uma imagem do **Nginx**, que é usada para servir a aplicação.
-    - Porta mapeada: `80`.
+## Pré-requisitos
 
-3. **Docker Compose**:
-    - O arquivo `docker-compose.yml` orquestra ambos os serviços.
-    - Ele constrói as imagens e sobe os contêineres do **backend** e **frontend**.
-    - Ambos os serviços compartilham a mesma rede, facilitando a comunicação.
-    - Com o comando `docker-compose up --build`, você pode levantar todo o sistema com um único comando.
+Antes de iniciar, certifique-se de que os seguintes softwares estão instalados no seu ambiente:
+
+- [Docker](https://docs.docker.com/get-docker/) e [Docker Compose](https://docs.docker.com/compose/install/)
+- Git
+
+## Instruções para Clonar e Executar o Projeto
+
+1. **Clone o Repositório**:
+
+   Execute os seguintes comandos no terminal para clonar o projeto em sua máquina local:
+   ```bash
+   git clone https://github.com/Douglas4Developer/javafilesSpringReact.git
+   cd javafilesSpringReact
+   ```
+
+2. **Configuração via Docker Compose**:
+
+   O projeto foi configurado para rodar tanto o backend quanto o frontend em contêineres Docker. Abaixo estão as instruções detalhadas de como executar o projeto utilizando **Docker Compose**.
+
+   ### Backend (Java Spring Boot):
+   - **Base da Imagem**: OpenJDK 21.
+   - **Porta Exposta**: `8080`.
+   - O backend se comunica com o banco de dados MySQL e está configurado para usar **Flyway** para migrações de banco de dados.
+
+   ### Frontend (Angular 18):
+   - **Base da Imagem**: Node.js 18.
+   - **Porta Exposta**: `4200` (para desenvolvimento com **ng serve**).
+   - O frontend consome a API do backend e foi projetado para rodar em um ambiente separado, mas na mesma rede Docker.
+
+3. **Subir o Sistema com Docker Compose**:
+
+   No diretório raiz do projeto, execute o seguinte comando para construir as imagens e iniciar os contêineres:
+   ```bash
+   docker-compose up --build
+   ```
+
+   O **docker-compose.yml** foi configurado para:
+
+   - Construir e rodar o backend na porta **8080**.
+   - Rodar o frontend na porta **4200**, permitindo o acesso à aplicação Angular via navegador.
+   - Gerenciar o banco de dados MySQL necessário para o backend.
+
+4. **Acessar a Aplicação**:
+
+   - **Backend**: A API pode ser acessada via `http://localhost:8080`.
+   - **Frontend**: A interface web estará disponível em `http://localhost:4200`.
+
+## Estrutura do Projeto
+
+### Backend
+
+- **Spring Boot**: Backend utilizando o framework Spring Boot com persistência JPA.
+- **Banco de Dados MySQL**: O backend utiliza MySQL para armazenar os diretórios e arquivos.
+- **Flyway**: Utilizado para versionamento e migrações do banco de dados.
+
+### Frontend
+
+- **Angular 18**: Desenvolvido com Angular standalone components, com foco em uma interface simples e responsiva para visualizar diretórios e arquivos.
+- **Node.js**: Utilizado para compilar e servir o frontend localmente no ambiente de desenvolvimento.
+
+## Variáveis de Ambiente
+
+As variáveis de ambiente foram configuradas diretamente no arquivo `docker-compose.yml`. Se precisar fazer ajustes manuais, veja as configurações atuais:
+
+```yml
+environment:
+  SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/javafiles_db
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_PASSWORD: 326598
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+```
+
+## Rodando Testes
+
+- **Backend**: Os testes unitários podem ser executados com o Maven, se você deseja rodar localmente sem Docker:
+  ```bash
+  mvn clean test
+  ```
+
+## Informações Adicionais
+
+- Se encontrar algum problema, certifique-se de que o **Docker** e o **Docker Compose** estão configurados corretamente no seu sistema.
+- Para parar os contêineres, basta rodar:
+  ```bash
+  docker-compose down
+  ```
+
+---
+
+Este README foi criado para facilitar o processo de execução do projeto. Espero que isso ajude a impressionar o recrutador e garantir que tudo funcione de forma fluida!
 
 ---
 
@@ -161,3 +240,54 @@ INSERT INTO arquivo (nome, diretorio_id) VALUES ('certidao.pdf', 4);  -- Arquivo
 - Melhorar a interface para permitir a busca por arquivos e diretórios.
 
 ---
+
+## Testes Unitários
+
+### Backend
+
+Os testes unitários para o backend foram implementados utilizando **JUnit 5** e **Mockito** para simular dependências. Eles garantem que as principais funcionalidades do sistema, como criação, listagem, busca e deleção de arquivos e diretórios, funcionem corretamente.
+
+### Testes Implementados
+
+Os testes cobrem as principais camadas de lógica de negócio do projeto:
+
+- **ArquivoServiceTest**: Testa as funcionalidades relacionadas à criação, listagem, busca e remoção de arquivos no sistema.
+  - Teste de criação de arquivo.
+  - Teste de busca por ID de arquivo.
+  - Teste de exclusão de arquivos.
+  - Teste para validar exceções, como tentar deletar ou buscar arquivos que não existem.
+  
+- **DiretorioServiceTest**: Testa as operações sobre diretórios, garantindo que subdiretórios e arquivos sejam corretamente gerenciados.
+
+### Rodando os Testes
+
+Para rodar os testes localmente, basta utilizar o Maven. Dentro do diretório do backend (`javafiles`), execute o seguinte comando:
+
+```bash
+mvn clean test
+```
+
+Este comando irá rodar todos os testes unitários definidos no projeto e exibir o resultado no terminal. Você pode também verificar os relatórios de testes que são gerados na pasta `target/surefire-reports`.
+
+### Cobertura de Testes
+
+O objetivo principal dos testes é garantir que as regras de negócio sejam validadas adequadamente. É recomendável que você execute os testes sempre que realizar alterações significativas no código para garantir que não quebrou nenhuma funcionalidade existente.
+
+
+## Rodando Testes
+
+- **Backend**: Os testes unitários podem ser executados com o Maven, se você deseja rodar localmente sem Docker:
+  ```bash
+  mvn clean test
+  ```
+
+## Informações Adicionais
+
+- Se encontrar algum problema, certifique-se de que o **Docker** e o **Docker Compose** estão configurados corretamente no seu sistema.
+- Para parar os contêineres, basta rodar:
+  ```bash
+  docker-compose down
+  ```
+
+---
+ 
