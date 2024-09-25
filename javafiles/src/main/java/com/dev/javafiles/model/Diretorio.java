@@ -1,6 +1,7 @@
 package com.dev.javafiles.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"diretorioPai"})  // Ignora o diretorioPai na serialização
 public class Diretorio {
 
     @Id
@@ -21,14 +21,19 @@ public class Diretorio {
 
     private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "diretorio_pai_id")
-    @JsonIgnoreProperties("subdiretorios")  // Evita a recursão dos subdiretórios quando serializar
-    private Diretorio diretorioPai;
+    // Relacionamento com arquivos
+    @OneToMany(mappedBy = "diretorio", cascade = CascadeType.ALL)
+    @JsonManagedReference  // Controla a serialização de arquivos
+    private List<Arquivo> arquivos;
 
+    // Relacionamento com subdiretórios
     @OneToMany(mappedBy = "diretorioPai", cascade = CascadeType.ALL)
+    @JsonManagedReference  // Controla a serialização de subdiretórios
     private List<Diretorio> subdiretorios;
 
-    @OneToMany(mappedBy = "diretorio", cascade = CascadeType.ALL)
-    private List<Arquivo> arquivos;
+    // Relacionamento com diretório pai
+    @ManyToOne
+    @JoinColumn(name = "diretorio_pai_id")
+    @JsonBackReference  // Evita a serialização do diretório pai na serialização de subdiretórios
+    private Diretorio diretorioPai;
 }

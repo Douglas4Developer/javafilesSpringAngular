@@ -2,7 +2,9 @@ package com.dev.javafiles.service.impl;
 
 import com.dev.javafiles.exception.ResourceNotFoundException;
 import com.dev.javafiles.model.Arquivo;
+import com.dev.javafiles.model.Diretorio;
 import com.dev.javafiles.repository.ArquivoRepository;
+import com.dev.javafiles.repository.DiretorioRepository;
 import com.dev.javafiles.service.ArquivoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,24 @@ public class ArquivoServiceImpl implements ArquivoService {
     @Autowired
     private ArquivoRepository arquivoRepository;
 
+    @Autowired
+    private DiretorioRepository diretorioRepository;
+
     @Override
+
     public Arquivo criarArquivo(Arquivo arquivo) {
-        // Adicionar validações se necessário
+        // Verifique se o diretório existe no banco de dados
+        Diretorio diretorio = diretorioRepository.findById(arquivo.getDiretorio().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Diretório inválido ou não informado."));
+
+        // Associe o diretório ao arquivo
+        arquivo.setDiretorio(diretorio);
+
+        // Agora salve o arquivo no banco de dados
         return arquivoRepository.save(arquivo);
     }
+
+
 
     @Override
     public List<Arquivo> listarArquivos() {

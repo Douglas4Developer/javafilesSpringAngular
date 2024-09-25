@@ -1,6 +1,6 @@
 package com.dev.javafiles.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"diretorio"})  // Ignora o diretorio na serialização para evitar loops
 public class Arquivo {
 
     @Id
@@ -20,6 +19,7 @@ public class Arquivo {
     private String nome;
 
     @ManyToOne
-    @JoinColumn(name = "diretorio_id")
+    @JoinColumn(name = "diretorio_id", nullable = false)
+    @JsonBackReference  // Evita a serialização do diretório no arquivo
     private Diretorio diretorio;
 }

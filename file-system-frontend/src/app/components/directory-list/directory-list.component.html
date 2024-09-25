@@ -1,16 +1,27 @@
 <mat-card class="directory-card">
     <mat-card-header>
       <mat-card-title>Lista de Diretórios</mat-card-title>
-      <mat-card-subtitle>Visualize seus diretórios e subdiretórios</mat-card-subtitle>
+      <mat-card-subtitle>Visualize seus diretórios, subdiretórios e arquivos</mat-card-subtitle>
     </mat-card-header>
   
-    <mat-list>
-      <mat-list-item *ngFor="let dir of directories">
-        <div mat-line>{{ dir.nome }}</div>
-        <div mat-line>
-          <span *ngIf="dir.subdiretorios?.length">Subdiretórios: {{ dir.subdiretorios.length }}</span>
-        </div>
-      </mat-list-item>
-    </mat-list>
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+      <!-- Nó pai - Diretórios e Subdiretórios -->
+      <mat-tree-node *matTreeNodeDef="let node; when: hasChild">
+        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.nome">
+          <mat-icon>{{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+        </button>
+        <mat-icon>folder</mat-icon> {{ node.nome }}
+      </mat-tree-node>
+  
+      <!-- Nó folha - Arquivos -->
+      <mat-tree-node *matTreeNodeDef="let node">
+        <button mat-icon-button disabled></button>
+        <mat-icon>insert_drive_file</mat-icon> {{ node.nome }}
+      </mat-tree-node>
+    </mat-tree>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="goToAbout()">Sobre Mim</button>
+    </mat-card-actions>
   </mat-card>
   
+ 

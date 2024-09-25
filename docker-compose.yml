@@ -1,0 +1,22 @@
+services:
+  backend:
+    build: ./javafiles
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    volumes:
+      - ./javafiles:/app
+
+  frontend:
+    build: ./file-system-frontend
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
