@@ -9,3 +9,6 @@ COPY target/*.jar app.jar
 
 # Comando para rodar o aplicativo Spring Boot
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Expondo a porta 8080
+EXPOSE 8080
