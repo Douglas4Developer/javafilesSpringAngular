@@ -10,7 +10,7 @@ Este projeto é um sistema de gerenciamento de arquivos e diretórios, desenvolv
   - Java 21
   - Spring Boot
   - Spring Data JPA
-  - PostgreSQL
+  - MYSql
   - Swagger para documentação
   - Docker para conteinerização
 - **Frontend**:
